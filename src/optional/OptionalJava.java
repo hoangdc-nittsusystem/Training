@@ -1,5 +1,10 @@
 package optional;
+import java.awt.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class OptionalJava {
 	public static void main(String[] args) {
@@ -13,6 +18,7 @@ public class OptionalJava {
 
         System.out.println("ofNullable on Non-Empty Optional: " + Optional.ofNullable(answer1));
         System.out.println("ofNullable on Empty Optional: " + Optional.ofNullable(answer2));
+//        System.out.println(Optional.of(answer2));
         
         String[] words = new String[10];   
         words[5] = "";
@@ -31,7 +37,21 @@ public class OptionalJava {
         Optional<Integer> opt1 = Optional.of(int1);
         Optional<Integer> opt2 = Optional.ofNullable(int2);
         Optional<Integer> opt3 = Optional.empty();
-        Integer int11 = opt1.orElse(new Integer(2));
-        System.out.println(opt2.get());
+        Optional<ArrayList<Integer>> optList = Optional.ofNullable(new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4)));
+        
+        System.out.println(opt3.orElse(new Integer(20)));
+        
+        opt1.map(value -> value + 1);
+        System.out.println(opt1.filter(item -> item > 1));
+        System.out.println(opt1.map(item -> item + 1));
+        System.out.println(opt1);
+        System.out.println(optList.map(element -> element.size()) );
+        System.out.println(optList.get().stream().map(element -> element + 1).collect(Collectors.toList()));
+        System.out.println(Optional.of(new Integer(1)).get());
+        
+        System.out.println(Optional.empty().isPresent());
+        
+        Optional.empty().ifPresent(value -> System.out.println(value));
+        Optional.of(new Integer(1111)).ifPresent(value -> System.out.println(value));
 	}
 }

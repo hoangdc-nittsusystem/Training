@@ -36,6 +36,24 @@ BinaryOperator | apply | T , T | T
 
 ### Functional Interface với 3 tham số đầu vào
 
+### Method reference
+Nếu trong lambda expression chỉ có một method thì sử dụng method reference để ngắn gọn hơn
+```java
+// Class and static method
+// Using a lambda expression
+findNumbers(list, (i1, i2) -> Numbers.isMoreThanFifty(i1, i2));
+
+// Using a method reference
+findNumbers(list, Numbers::isMoreThanFifty);
+
+// Class 
+// Using a lambda expression
+calculateOnShipments(l, s -> s.calculateWeight());
+
+// Using a method reference
+calculateOnShipments(l, Shipment::calculateWeight);
+```
+
 
 
 --------
@@ -110,7 +128,7 @@ Sử dụng:
 * Thực hiện thao tác trung gian (Intermediate Operations): `map`, `filter`, `sorted`
 * Thực hiện thao tác đầu cuối (Terminal Operations) để trả về kết quả cuối cùng của loạt thao tác trên dữ liệu: `collect`, `forEach`, `reduce`
 
-Nguồn lấy stream:
+### Nguồn lấy stream:
 * Collection `cl.stream()` hoặc `cd.parallelStream()`
 * `Arrays.stream( Object [])`
 * `BufferedReader.lines()`
@@ -170,15 +188,32 @@ Là đối tượng xử lí các object có khả năng sinh ra NullPointerExce
 
 ### Khai báo
 ``` java
-Optional<Object> opt = Optional.empty();    // đối tượng null
-Optional<Object> opt = Optional.of(Object); // đối tượng không null
-Optional<Object> opt = Optional.ofNullable; // đối tượng chưa rõ null hay không null
+Optional<Object> opt = Optional.empty();                // đối tượng null
+Optional<Object> opt = Optional.of(Object);             // đối tượng không null, nếu null ném NullPoiterException
+Optional<Object> opt = Optional.ofNullable(Object);     // đối tượng chưa rõ null hay không null
 ```
 
 ### Các method chính
-* orElse()
-* get()
-* isPresent()
+* opt.orElse(another Object) : lấy giá trị đối tượng, nếu null lấy giá trị Object truyền vào.
+```java
+Optional.empty().orElse(null);                  // null
+Optional.of(new Integer(1)).orElse(null);       // 1
+```
+
+* opt.get(): lấy giá trị đối tượng, nếu null ném ra `NoSuchElementException`
+```java
+Optional.empty().get();                 // Exception
+Optional.of(new Integer(1)).get()       // 1
+```
+
+* opt.isPresent(): check đối tượng có null hay không
+```java
+Optional.empty().isPresent();           // false
+Optional.of(new Integer(1)).isPresent() // true
+```
+* opt.ifPresent(Consumer)
+* opt.filter(Predicate): tạo bản sao, lọc bản sao theo một điều kiện nào đó
+* opt.map(Function): tạo bản sao, thay đổi bản sao theo một điều kiện nào đó
 
 --------
 <div style="page-break-after: always;"></div>

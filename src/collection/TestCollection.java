@@ -24,6 +24,16 @@ public class TestCollection {
 		list.contains("Cong");
 		list.size();
 		
+		for (int i = 0; i < list.size(); i++) {
+			
+		}
+		for (String element: list) {
+			
+		}
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			System.out.println(iterator.next());
+		}
+		
 		System.out.println(list);
 		System.out.println(list.contains("Cong"));
 		

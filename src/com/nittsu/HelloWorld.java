@@ -28,9 +28,9 @@ public class HelloWorld extends Hello1{
 	}
 	
 	
-//	public static void run() {
-//		System.out.println("hello");
-//	}
+	public int sum( int a, int b) {
+		return a + b;
+	}
 	
 	public static void main(String[] args) {
 		System.out.println("123123213");
@@ -38,6 +38,7 @@ public class HelloWorld extends Hello1{
 		System.out.println(hl.test);
 		hl.run();
 		hl.b = 1;
+//		hl.sum(1, null);
 	}
 }
 
