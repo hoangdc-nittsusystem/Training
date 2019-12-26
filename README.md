@@ -116,7 +116,7 @@ ArrayList<Integer> listInt = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5)
 <div style="page-break-after: always;"></div>
 
 # 6. Stream
-Đối tượng xử lí tập hợp các object, có thể là Collection, Array hoặc I/O File. Cung cấp một số phương thức thao tác tuần tự trên các tập hợp để đạt đc kết quả mong muốn.
+Stream ở đây thực chất là stream pipeline, nó bao gồm một loạt các thao tác với chuỗi dữ liệu (stream). Stream pipeline hay được gọi tắt đi là stream tuy nhiên hai khái niệm này hoàn toàn khác nhau
 
 Đặc điểm:
 * Không lưu trữ dữ liệu mà thao tác trên dữ liệu lấy từ nguồn
@@ -149,7 +149,7 @@ stream.filter(x -> x > 3);
 ```
 stream3.sorted( (item1, item2) -> {	return item2.compareTo(item1); }
 ```
-* `ship, limit`: skip(), limit() hoàn toàn tương tự với OFSET và LIMIT trong SQL
+* `skip, limit`: skip(), limit() hoàn toàn tương tự với OFSET và LIMIT trong SQL
 ```
 stream4.skip(1).limit(10)
 ```
@@ -174,6 +174,36 @@ stream7.reduce("", (str1, str2) -> str1 + " " + str2)
 stream7.count();
 ```
 
+* `max`, `min`: trả về phần tử max hoặc min trong stream: tham số truyền vào là Comparator
+``` java
+stream7.max( (a, b) -> a - b);
+```
+
+* `allMatch` (Predicate) => boolean: kiểm tra xem toàn bộ stream có thỏa mãn điều kiện nào đó ko
+``` java
+Arrays.asList(1, 2, 3).stream().allMatch( a -> a < 4);   // true
+```
+
+* `anyMatch` (Predicate) => boolean: kiểm tra xem trong stream có phần tử nào thỏa mãn điều kiện nào đó ko
+``` java
+Arrays.asList(1, 2, 3).stream().anyMatch( a -> a < 2);   // true
+```
+
+* `noneMatch` (Predicate) => boolean: kiểm tra xem toàn bộ các phần tử nào có không thỏa mãn điều kiện nào đó ko
+``` java
+Arrays.asList(1, 2, 3).stream().noneMatch( a -> a < 1);   // true
+```
+
+* `findAny` trả về 1 Optional của 1 phần tử bất kì trong stream
+``` java
+Arrays.asList(1, 2, 3).stream().findAny();   // Optional[1]
+```
+
+* `findFirst` trả về Optional của phần tử đầu tiên trong stream
+``` java
+Arrays.asList(1, 2, 3).stream().findFirst();   // Optional[1]
+```
+
 ## Parallel Stream
 ``` java
 Collection.parallelStream();
@@ -194,31 +224,82 @@ Optional<Object> opt = Optional.ofNullable(Object);     // đối tượng chưa
 ```
 
 ### Các method chính
-* opt.orElse(another Object) : lấy giá trị đối tượng, nếu null lấy giá trị Object truyền vào.
+* `opt.orElse(another Object)` : lấy giá trị đối tượng, nếu null lấy giá trị Object truyền vào.
 ```java
 Optional.empty().orElse(null);                  // null
 Optional.of(new Integer(1)).orElse(null);       // 1
 ```
 
-* opt.get(): lấy giá trị đối tượng, nếu null ném ra `NoSuchElementException`
+* `opt.orElseThrow(Supplier<X> exceptionSupplier)` : lấy giá trị đối tượng, nếu null ném ra một Exception tùy ý người lập trình.
+```java
+Optional.empty().orElseThrow( () -> new ArithmeticException);       //  throw ArithmeticException
+```
+
+* `opt.get()`: lấy giá trị đối tượng, nếu null ném ra `NoSuchElementException`
 ```java
 Optional.empty().get();                 // Exception
 Optional.of(new Integer(1)).get()       // 1
 ```
 
-* opt.isPresent(): check đối tượng có null hay không
+* `opt.isPresent()`: check đối tượng có null hay không
 ```java
 Optional.empty().isPresent();           // false
 Optional.of(new Integer(1)).isPresent() // true
 ```
-* opt.ifPresent(Consumer)
-* opt.filter(Predicate): tạo bản sao, lọc bản sao theo một điều kiện nào đó
-* opt.map(Function): tạo bản sao, thay đổi bản sao theo một điều kiện nào đó
+* `opt.ifPresent(Consumer)`: nếu isPresent() thì thực thi phương thức truyền vào
+```java
+Optional.empty().ifPresent( value -> System.out.println(value));// không in gì
+Optional.of(new Integer(1)).isPresent() // true
+```
+* `opt.filter(Predicate)`: tạo bản sao, lọc bản sao theo một điều kiện nào đó
+* `opt.map(Function)`: tạo bản sao, thay đổi bản sao theo một điều kiện nào đó
 
 --------
 <div style="page-break-after: always;"></div>
 
 # 8. String
+![](https://o7planning.org/vi/10217/cache/images/i/20175.png)
+
+Đối tượng biểu diễn một nối tiếp các kí tự hay 1 mảng kí tự. Vì thế nó là ko thể thay đổi (immutable)
+
+### Khai báo
+* `String str = "123"`: String literal. Không khởi tạo Object, lưu giá trị trong Pool. Nếu một string mới đc khai báo mà đã tồn tại trong Pool thì sẽ tham chiếu đến giá trị đã có chứ ko khởi tạo thêm.
+* `new String()`: tạo một String Object. Khi đó 2 object đc khởi tạo: một trong Heap Area và một String constant pool. String object sẽ tham chiếu tới object trong heap area
+
+### Các phương thức chính
+No | Method | Mô tả
+--- | --- | ---
+1 | char charAt(int index) | 
+2 | int length() |
+3 | String substring( int begin, int end) | giống JS
+4 | boolean contains(String str) | 
+5 | boolean equals(String str) |
+6 | boolean isEmpty() |
+7 | String replace( char old, char new) |
+8 | String[] split(String regex, int limit) | limit là số phần tử tối đa của mảng trả về, nếu là 0 thì ko có  limit
+9 | String intern() | trả về chuỗi đc lưu trong Pool
+10 | int indexOf( String ch, int fromIndex) |
+11 | String toLowerCase() |
+12 | String trim() | xóa khoảng trắng ở đầu và cuối chuỗi
+13 | static String format(String format, Object... args) | khá giống trong C: `String.format("name is %s", "sonoo");`
+14 | static String join(String delimiter, String... args) |
+15 | static equalsIgnoreCase(String another) |
+16 | static String valueOf( int value) | chuyển int (hoặc kiểu khác) thành String
+
+## StringBuilder và StringBuffer
+Chuỗi có thể thay đổi, phù hợp khi làm việc với dữ liệu lớn??
+* StringBuilder: xử lí văn bản 1 luồng (Thread)
+* StringBuffer: xử lí văn bản nhiều luồng, các method `append`, `insert`, `replace`, `delete`, `reverse` là `synchronized` 
+
+### Các phương thức chính
+No | Method | Mô tả
+--- | --- | ---
+1 | StringBuilder append( String s) | nối chuỗi vào chuỗi ban đầu
+2 | StringBuilder insert( int start, String str) | 
+3 | StringBuilder replace(int start, int end, String str) | bỏ chuỗi [start,end) thay thế bằng chuỗi str đầy đủ
+4 | StringBuilder delete( int start, int end) | 
+5 | StringBuilder reverse() | 
+
 
 --------
 <div style="page-break-after: always;"></div>

@@ -53,5 +53,24 @@ public class OptionalJava {
         
         Optional.empty().ifPresent(value -> System.out.println(value));
         Optional.of(new Integer(1111)).ifPresent(value -> System.out.println(value));
+        
+        OptionalJava oj = new OptionalJava();
+        System.out.println(oj.calculateAverage(1, 2, null));
+        
+//        System.out.println(Optional.empty().orElseThrow( () -> new ArithmeticException() ) ); 
+	}
+	
+	public Optional<Double> calculateAverage(Integer... params) {
+		System.out.println(params.length);
+//		Integer a = null;
+//		int a = null;
+		boolean check = Arrays.asList(params).stream().allMatch(a -> a != null && a >= 0 && a <= 10);
+		
+		if (check) {
+			return Optional.of( (double) Arrays.asList(params).stream().reduce(0, (a, b) -> a + b).intValue() / params.length);
+		} else {
+			return Optional.empty();
+		}
+		
 	}
 }

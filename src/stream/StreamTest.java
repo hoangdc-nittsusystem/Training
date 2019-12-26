@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.OptionalInt;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.stream.*;
 
 public class StreamTest {
@@ -68,6 +69,14 @@ public class StreamTest {
         
         OptionalInt result = IntStream.of().reduce( (a, b) -> a + b);
         System.out.println(result); // 10
+        
+        System.out.println(Arrays.asList(1, 2, 3, 4).stream().max( (a, b) -> a - b) );
+        System.out.println(Arrays.asList(1, 2, 3).stream().allMatch( a -> a < 4));
+        System.out.println(Arrays.asList(1, 2, 3).stream().anyMatch( a -> a < 1));
+        System.out.println(Arrays.asList(1, 2, 3).stream().noneMatch( a -> a < 1));
+        System.out.println(Arrays.asList(1, 2, 3).stream().findAny() );
+        System.out.println(Arrays.asList(1, 2, 3).stream().findFirst() );
+        
 	}
 }
 
