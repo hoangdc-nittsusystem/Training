@@ -23,7 +23,11 @@ public class JavaString {
 		sb.append("java is my favourite language");
 		System.out.println(sb.capacity());// đến đây là (16*2)+2=34 i.e (dung lượng cũ*2)+2
 		System.out.println(sb.toString().toLowerCase());
-		System.out.println(sb.append(13));
+		
+		StringBuilder sb2 = new StringBuilder(5);
+		sb2.append("hello1");
+		System.out.println(sb2.capacity());
+		System.out.println(sb2.length());
 
 	}
 
