@@ -299,21 +299,60 @@ No | Method | Mô tả
 3 | StringBuilder replace(int start, int end, String str) | bỏ chuỗi [start,end) thay thế bằng chuỗi str đầy đủ
 4 | StringBuilder delete( int start, int end) | 
 5 | StringBuilder reverse() | 
+6 | int capacity() | trả về dung lượng hiện tại, dung lượng hiện tại >= số kí tự. Nếu append vượt quá dung lượng hiện tại thì dung lượng mới = *2 + 2
+7 | void ensureCapacity(int minCapacity) | tăng dung lượng của chuỗi đủ >= minCapacity 
+
+--------
+<div style="page-break-after: always;"></div>
+
+# 9. Date
+java<8 | java 8
+--- | ---
+java.util.Date, java.util.Calendar, java.sql.Date | java.time.* : LocalDate, LocalTime, LocalDateTime
+không nhất quán khi có 2 class cùng tên Date của gói khác nhau | nhất quán
+method `parse, format` trong package java.text | đều trong gói java.time: time.format
+mutable, không an toàn trong đa luồng | immutable, thread safe: các hàm modify trả về copy của object gốc nên object gốc không bị thay đổi -> chaining method
+thiết kế kém (util.Date gồm cả date và time, sql.Date chỉ gồm date) với các method ko phù hợp với thao tác về ngày tháng?? | chuẩn ISO, nhiều method tiện lợi hơn 
+ít hỗ trọ hoặc không có xử lí timezone | hỗ trợ xử lí timezone
+
+### LocalDate
+No | Method | Mô tả
+--- | --- | ---
+1 | static LocalDate now() | `LocalDate.now();`
+2 | static LocalDate of(int year, int month, int day) | `LocalDate.of(2019, 12, 26);`
+3 | static LocalDate parse(String date, DateTimeFormatter formatter) | `LocalDate.parse("2019-12-26");`
+4 | LocalDate plus(long dayToPlus, TemporalUnit unit) | cộng thêm một số đơn vị thời gian (enums) | `LocalDate.now().plus(1, ChronoUnit.MONTHS);`
+5 | LocalDate minus(long dayToMinus, TemporalUnit unit) | giảm đi một số đơn vị thời gian (enums) | `LocalDate.now().minus(1, ChronoUnit.MONTHS);`
+6 | LocalDate plusDays(long dayToPlus) |
+7 | int getDayOfMonth() |
+8 | int getYear() |
+9 | boolean isLeapYear() |
+10 | boolean isAfter(LocalDate anotherLocalDate) |
+
+### LocalTime
+No | Method | Mô tả
+--- | --- | ---
+1 | static LocalTime now() | `LocalTime.now();`
+2 | static LocalTime of(int hour, int minute) | `LocalTime.of(12, 26);`
+3 | static LocalTime parse(String time, DateTimeFormatter formatter) | `LocalTime.parse("12:26");`
+4 | LocalDate plus(long dayToPlus, TemporalUnit unit) | cộng thêm một số đơn vị thời gian (enums) | `LocalDate.now().plus(1, ChronoUnit.MONTHS);`
+5 | LocalDate minus(long dayToMinus, TemporalUnit unit) | giảm đi một số đơn vị thời gian (enums) | `LocalDate.now().minus(1, ChronoUnit.MONTHS);`
+6 | LocalDate plusDays(long dayToPlus) |
+7 | int getDayOfMonth() |
+8 | int getYear() |
+9 | boolean isLeapYear() |
+10 | boolean isAfter(LocalDate anotherLocalDate) |
+
 
 
 --------
 <div style="page-break-after: always;"></div>
 
-# 7. Date
+
+# 10. IO File
 
 --------
 <div style="page-break-after: always;"></div>
 
-
-# 8. IO File
-
---------
-<div style="page-break-after: always;"></div>
-
-# 9. Concurrency
+# 11. Concurrency
 
